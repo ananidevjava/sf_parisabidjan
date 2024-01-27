@@ -1,0 +1,8 @@
+<h1>Confirmation de votre compte utilisateur</h1>
+
+<p>
+    Bonjour {{ user.fullname }}<br>
+    Veuillez confirmer votre compte en cliquant <a href="{{ absolute_url(path('account_verify', {'id': user.id, 'token': token})) }}">ici</a>. <br>
+    Ce lien est valable jusqu'au {{ tokenLifeTime }}<br>
+    Merci.
+</p>

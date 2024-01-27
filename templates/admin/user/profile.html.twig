@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profile
+{% endblock %}
+
+{% block body %}
+	<h1>Profile</h1>
+	{% set user = app.user %}
+	<div>
+		<span>Nom:
+			{{ user.fullname }}</span>
+	</div>
+	<div>
+		<span>Genre:
+			{{ user.gender }}</span>
+	</div>
+	<div>
+		<span>Date de naissance:
+			{{ user.dob | date('d/m/Y') }}</span>
+	</div>
+	<div>
+		<span>Téléphone 1 (Whatsapp):
+			{{ user.phone1 }}</span>
+	</div>
+
+	{% if user.phone2 is defined %}
+		<div>
+			<span>Téléphone 2:
+				{{ user.phone2 }}
+			</span>
+		</div>
+	{% endif %}
+
+    <a href="{{ path('user_address_create') }}">Ajouter une addresse</a>
+
+	{% if user.addresses is not empty %}
+        <hr style="margin: 1rem 0;">
+		<div class="addresses">
+			{% for address in user.addresses %}
+				<div class="address" style="background-color: rgba(200, 100, 255, .5); margin-bottom: 1rem">
+						<div>Pays: {{ address.country }}</div>
+						<div>Ville: {{ address.city }}</div>
+                        {% if address.zipCode is defined %}
+						    <div>Code postal: {{ address.zipCode }}</div>
+                        {% endif %}
+                        {% if address.street is defined %}
+						    <div>Rue: {{ address.street }}</div>
+                        {% endif %}
+                        {% if address.furtherInformation is defined %}
+						    <div>Info. complémentaire: <p>{{ address.furtherInformation }}<p></div>
+                        {% endif %}
+						<div>
+							<a href="{{ path('user_address_update', {'id': address.id}) }}">Modifier</a>
+							<a href="{{ path('user_address_delete', {'id': address.id}) }}" style="color: red">Supprimer</a>
+						</div>
+				</div>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+
+{% endblock %}
