@@ -18,7 +18,7 @@ class AddressType extends AbstractType
     {
         $builder
             ->add('country', ChoiceType::class, [
-                'label' => 'Genre',
+                'label' => 'Pays',
                 'choices' => [
                     "Côte d'Ivoire" => 'ci',
                     "France" => 'fr'

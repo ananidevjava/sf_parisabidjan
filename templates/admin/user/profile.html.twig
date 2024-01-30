@@ -1,62 +1,78 @@
-{% extends 'base.html.twig' %}
+{% extends 'layouts/admin_base.html.twig' %}
 
-{% block title %}Profile
-{% endblock %}
+{% block title %}Profile {% endblock %}
 
 {% block body %}
-	<h1>Profile</h1>
-	{% set user = app.user %}
-	<div>
-		<span>Nom:
-			{{ user.fullname }}</span>
-	</div>
-	<div>
-		<span>Genre:
-			{{ user.gender }}</span>
-	</div>
-	<div>
-		<span>Date de naissance:
-			{{ user.dob | date('d/m/Y') }}</span>
-	</div>
-	<div>
-		<span>Téléphone 1 (Whatsapp):
-			{{ user.phone1 }}</span>
-	</div>
+    {% set user = app.user %}
+    <div class="row">
+        <div class="col-md-8 stretch-card grid-margin">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title">Profile</p>
+                    <ul class="icon-data-list">
+                        <li>
+                            <div class="row col-md-12">
+                                <div class="col-md-4">
+                                    <img src="{{ asset('assets/images/faces/face1.jpg') }}" alt="{{ user.firstName }}">
+                                </div>
 
-	{% if user.phone2 is defined %}
-		<div>
-			<span>Téléphone 2:
-				{{ user.phone2 }}
-			</span>
-		</div>
-	{% endif %}
+                                <div class="col-md-8">
+                                    <p>Nom : {{ user.lastName }}</p>
+                                    <p>Prenom(s): {{ user.firstName }}</p>
+                                    <p class="mb-2">Genre: {{ user.gender }}</p>
+                                    <p class="mb-2">Whatsapp {{ user.phone1 }}</p>
+                                    {% if user.phone2 is defined %}
+                                        <p class="mb-2">Téléphone direct {{ user.phone2 }}</p>
+                                    {% endif %}
+                                    <p class="mb-0">Date de naissance {{ user.dob | date('d/m/Y') }}</p> <br>
 
-    <a href="{{ path('user_address_create') }}">Ajouter une addresse</a>
+                                    <a class="btn btn-primary btn-sm" href="{{ path('user_address_create') }}">Ajouter une
+                                        addresse</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if user.addresses is not empty %}
+        <div class="row">
+            <div class="col-md-4 stretch-card grid-margin">
+                <div class="row">
+                    <div class="col-md-12 stretch-card grid-margin grid-margin-md-0">
+                        {% for address in user.addresses %}
+                            <div class="card data-icon-card-primary m-2">
+                                <div class="card-body">
+                                    <p class="card-title text-white">
+                                        {% if address.street is defined %}
+                                            rue {{ address.street }} -
+                                        {% endif %}
+                                        {{ address.city }} - {{ address.country }}</p>
+                                    <div class="row d-flex">
+                                        <div class="col-8 text-white">
+                                            {% if address.zipCode is defined %}
+                                                <h3>BP: {{ address.zipCode }}</h3>
+                                            {% endif %}
 
-	{% if user.addresses is not empty %}
-        <hr style="margin: 1rem 0;">
-		<div class="addresses">
-			{% for address in user.addresses %}
-				<div class="address" style="background-color: rgba(200, 100, 255, .5); margin-bottom: 1rem">
-						<div>Pays: {{ address.country }}</div>
-						<div>Ville: {{ address.city }}</div>
-                        {% if address.zipCode is defined %}
-						    <div>Code postal: {{ address.zipCode }}</div>
-                        {% endif %}
-                        {% if address.street is defined %}
-						    <div>Rue: {{ address.street }}</div>
-                        {% endif %}
-                        {% if address.furtherInformation is defined %}
-						    <div>Info. complémentaire: <p>{{ address.furtherInformation }}<p></div>
-                        {% endif %}
-						<div>
-							<a href="{{ path('user_address_update', {'id': address.id}) }}">Modifier</a>
-							<a href="{{ path('user_address_delete', {'id': address.id}) }}" style="color: red">Supprimer</a>
-						</div>
-				</div>
-			{% endfor %}
-		</div>
-	{% endif %}
-
-
+                                            {% if address.furtherInformation is defined %}
+                                                <p class="text-white font-weight-500 mb-0">
+                                                    {{ address.furtherInformation }}
+                                                </p>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <a class="btn btn-xs btn-success align-bottom m-2" href="{{ path('user_address_update', {'id': address.id}) }}">Modifier</a>
+                                            <a class="btn btn-xs btn-danger align-bottom m-2" href="{{ path('user_address_delete', {'id': address.id}) }}" >Supprimer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
+
