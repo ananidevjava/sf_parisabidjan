@@ -15,13 +15,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
+#[Route('/admin', name: 'app_admin')]
 class RegistrationController extends AbstractController
 {
     public function __construct(private readonly UserService $userService)
     {
     }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route('/inscription', name: '_inscription')]
     public function register(
         Request $request,
         UserPasswordHasherInterface $userPasswordHasher,
@@ -37,12 +38,12 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('admin/user/register.html.twig', [
+        return $this->render('admin/inscription/index.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
 
-    #[Route('/account-verify/{id}/{token}', name: 'account_verify', methods: ['GET'])]
+    #[Route('/account-verify/{id}/{token}', name: '_account_verify', methods: ['GET'])]
     public function accountVerify(Users $user, string $token, EntityManagerInterface $em)
     {
         $this->userService->accountVerify($user, $token, $em);

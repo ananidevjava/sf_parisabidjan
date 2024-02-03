@@ -22,52 +22,62 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('firstName', TextType::class, [
-                'label' => 'Prénoms',
+                'label' => 'Prénoms *',
                 'attr' => [
-                    'placeholder' => 'Prénoms'
+                    'placeholder' => 'Prénoms',
+                    'class'=> 'form-control form-control-lg'
                 ]
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Nom',
+                'label' => 'Nom *',
                 'attr' => [
-                    'placeholder' => 'Prénoms'
+                    'placeholder' => 'Nom',
+                    'class'=> 'form-control form-control-lg'
                 ]
             ])
             ->add('dob', DateType::class, [
+                'label'=>'Date de naissance *',
                 'widget' => 'single_text',
                 'attr' => [
                     'data-format' => 'yyyy-mm-dd',
+                    'class'=> 'form-control form-control-lg'
                 ],
             ])
             ->add('gender', ChoiceType::class, [
-                'label' => 'Genre',
+                'label' => 'Genre *',
+                'attr' => [
+                    'class'=> 'form-control form-control-lg'
+                ],
                 'choices' => [
                     'Homme' => 'Homme',
                     'Femme' => 'Femme'
                 ],
-                'expanded' => true
+                'expanded' => false
             ])
             ->add('phone1', TextType::class, [
-                'label' => 'N° de téléphone 1 (whatsapp)',
+                'label' => 'N° de téléphone 1 (whatsapp) *',
                 'attr' => [
-                    'placeholder' => 'N° de téléphone 1 (whatsapp)'
+                    'placeholder' => 'N° de téléphone 1 (whatsapp)',
+                    'class'=> 'form-control form-control-lg'
                 ]
             ])
             ->add('phone2', TextType::class, [
                 'label' => 'N° de téléphone 2',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'N° de téléphone 2'
+                    'placeholder' => 'N° de téléphone 2',
+                    'class'=> 'form-control form-control-lg'
                 ]
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Adresse email',
+                'label' => 'Adresse email *',
                 'attr' => [
-                    'placeholder' => 'Adresse email'
+                    'placeholder' => 'Adresse email',
+                    'class'=> 'form-control form-control-lg'
                 ]
             ])
             ->add('agreeTerms', CheckboxType::class, [
-                'label'=>'Accepter les conditions',
+                'label'=>'Accepter les conditions *',
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
@@ -78,11 +88,12 @@ class RegistrationFormType extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
-                'label'=>'Mot de passe',
+                'label'=>'Mot de passe *',
                 'mapped' => false,
                 'attr' => [
                     'autocomplete' => 'new-password',
-                    'placeholder'=>'Mot de passe'
+                    'placeholder'=>'Mot de passe',
+                    'class'=> 'form-control form-control-lg'
                 ],
                 'constraints' => [
                     new NotBlank([

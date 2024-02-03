@@ -8,11 +8,5 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class InscriptionController extends AbstractController
 {
-    #[Route('/admin/inscription', name: 'app_admin_register')]
-    public function index(): Response
-    {
-        return $this->render('admin/inscription/index.html.twig', [
-            'controller_name' => 'InscriptionController',
-        ]);
-    }
+    
 }

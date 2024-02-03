@@ -2,7 +2,7 @@
 
 <p>
     Bonjour {{ user.fullname }}<br>
-    Veuillez confirmer votre compte en cliquant <a href="{{ absolute_url(path('account_verify', {'id': user.id, 'token': token})) }}">ici</a>. <br>
+    Veuillez confirmer votre compte en cliquant <a href="{{ absolute_url(path('app_admin_account_verify', {'id': user.id, 'token': token})) }}">ici</a>. <br>
     Ce lien est valable jusqu'au {{ tokenLifeTime }}<br>
     Merci.
 </p>

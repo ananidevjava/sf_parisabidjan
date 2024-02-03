@@ -73,6 +73,15 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $verifiedAt = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $tokenForgetPassword = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $tokenForgetPasswordLifeTime = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $passwordForgetUpdatedAt = null;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -305,6 +314,42 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerifiedAt(?\DateTimeImmutable $verifiedAt): static
     {
         $this->verifiedAt = $verifiedAt;
+
+        return $this;
+    }
+
+    public function getTokenForgetPassword(): ?string
+    {
+        return $this->tokenForgetPassword;
+    }
+
+    public function setTokenForgetPassword(?string $tokenForgetPassword): static
+    {
+        $this->tokenForgetPassword = $tokenForgetPassword;
+
+        return $this;
+    }
+
+    public function getPasswordForgetUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->passwordForgetUpdatedAt;
+    }
+
+    public function setPasswordForgetUpdatedAt(?\DateTimeImmutable $passwordForgetUpdatedAt): static
+    {
+        $this->passwordForgetUpdatedAt = $passwordForgetUpdatedAt;
+
+        return $this;
+    }
+
+    public function getTokenForgetPasswordLifeTime(): ?\DateTimeInterface
+    {
+        return $this->tokenForgetPasswordLifeTime;
+    }
+
+    public function setTokenForgetPasswordLifeTime(\DateTimeInterface $tokenForgetPasswordLifeTime): static
+    {
+        $this->tokenForgetPasswordLifeTime = $tokenForgetPasswordLifeTime;
 
         return $this;
     }

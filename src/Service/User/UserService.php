@@ -6,6 +6,7 @@ use App\Entity\User\Users;
 use Symfony\Component\Form\Form;
 use App\Service\Mail\MailService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
@@ -46,7 +47,7 @@ class UserService
         );
     }
 
-    public function accountVerify(Users $user, string $token, EntityManagerInterface $em)
+    public function accountVerify(Users $user, string $token, EntityManagerInterface $manager)
     {
         $userToken = $user->getTokenRegistreation();
 
@@ -67,6 +68,19 @@ class UserService
             ->setTokenRegistreation(null)
             ->setVerifiedAt($now);
 
-        $em->flush();
+        $manager->flush();
+    }
+
+    public function passwordReset(Users $user, FormInterface $form, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher){
+        $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                $user,
+                $form->get('password')->getData()
+            )
+        );
+
+        $user->setPasswordForgetUpdatedAt(new \DateTimeImmutable());
+
+        $manager->flush();
     }
 }

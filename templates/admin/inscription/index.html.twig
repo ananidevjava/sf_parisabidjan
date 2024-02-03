@@ -10,11 +10,60 @@
                 <div class="col-lg-4 mx-auto">
                     <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                         <div class="brand-logo">
-                            <img src="{{ asset('assets/images/logo.svg') }}" alt="logo">
+                            <img src="{{ asset('images/logo.svg') }}" alt="logo">
                         </div>
                         <h4>Creer un compte</h4>
                         <h6 class="font-weight-light">Inscrivez-vous sur ParisAbidjan</h6>
-                        <form class="pt-3">
+                        {{ form_start(registrationForm) }}
+                            <div class="form-group">
+                                {{ form_label(registrationForm.firstName) }}
+                                {{ form_widget(registrationForm.firstName) }}
+                                {{ form_errors(registrationForm.firstName) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.lastName) }}
+                                {{ form_widget(registrationForm.lastName) }}
+                                {{ form_errors(registrationForm.lastName) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.dob) }}
+                                {{ form_widget(registrationForm.dob) }}
+                                {{ form_errors(registrationForm.dob) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.gender) }}
+                                {{ form_widget(registrationForm.gender) }}
+                                {{ form_errors(registrationForm.gender) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.phone1) }}
+                                {{ form_widget(registrationForm.phone1) }}
+                                {{ form_errors(registrationForm.phone1) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.phone2) }}
+                                {{ form_widget(registrationForm.phone2) }}
+                                {{ form_errors(registrationForm.phone2) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.email) }}
+                                {{ form_widget(registrationForm.email) }}
+                                {{ form_errors(registrationForm.email) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.plainPassword) }}
+                                {{ form_widget(registrationForm.plainPassword) }}
+                                {{ form_errors(registrationForm.plainPassword) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(registrationForm.agreeTerms) }}
+                                {{ form_widget(registrationForm.agreeTerms) }}
+                                {{ form_errors(registrationForm.agreeTerms) }}
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100">Enregistrer</button>
+                        {{ form_end(registrationForm) }}
+                        {# <form class="pt-3">
                             <div class="form-group">
                                 <input type="text" class="form-control form-control-lg" id="exampleInputUsername1" placeholder="Nom et prenom">
                             </div>
@@ -58,7 +107,7 @@
                             <div class="text-center mt-4 font-weight-light">
                                 Vous avez déjà un compte? <a href="{{ path('app_admin_login') }}" class="text-primary">Se connecter</a>
                             </div>
-                        </form>
+                        </form> #}
                     </div>
                 </div>
             </div>

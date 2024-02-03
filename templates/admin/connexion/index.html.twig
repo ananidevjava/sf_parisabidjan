@@ -10,19 +10,22 @@
                     <div class="col-lg-4 mx-auto">
                         <div class="auth-form-light text-left py-5 px-4 px-sm-5">
                             <div class="brand-logo">
-                                <img src="{{ asset('assets/images/logo.svg') }}" alt="logo">
+                                <img src="{{ asset('images/logo.svg') }}" alt="logo">
                             </div>
                             <h4>Bonjour! Commençons</h4>
                             <h6 class="font-weight-light">Connectez-vous pour continuer.</h6>
-                            <form class="pt-3">
+                            <form class="pt-3" method="post">
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email ou Telephone">
+                                    <input type="email" value="" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="Email ou Téléphone">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Mot de passe">
+                                    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Mot de passe">
                                 </div>
+                                <input type="hidden" name="_csrf_token"
+                                    value="{{ csrf_token('authenticate') }}"
+                                >
                                 <div class="mt-3">
-                                    <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="#">Se connecter</a>
+                                    <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" type="submit"> Se connecter </button>
                                 </div>
                                 <div class="my-2 d-flex justify-content-between align-items-center">
                                     <div class="form-check">
@@ -31,10 +34,11 @@
                                             Se souvenir de moi
                                         </label>
                                     </div>
-                                    <a href="#" class="auth-link text-black">Mot de passe oublie?</a>
+                                    
+                                    <a href="{{ path('forget_password') }}" class="auth-link text-black">Mot de passe oublie?</a>
                                 </div>
                                 <div class="text-center mt-4 font-weight-light">
-                                    Vous n'avez pas de compte ? <a href="{{ path('app_admin_register') }}" class="text-primary">Créer</a>
+                                    Vous n'avez pas de compte ? <a href="{{ path('app_admin_inscription') }}" class="text-primary">Créer</a>
                                 </div>
                             </form>
                         </div>
