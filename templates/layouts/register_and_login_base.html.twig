@@ -17,7 +17,18 @@
 <body>
 
 {% block body %}
-    
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} alert-dismissible fade show">
+                <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                    <span>
+                        <i class="mdi mdi-close"></i>
+                    </span>
+                </button>
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 {% endblock %}
 <script src="{{ asset('vendors/js/vendor.bundle.base.js') }}"></script>
 <script src="{{ asset('js/off-canvas.js') }}"></script>

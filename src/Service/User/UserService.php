@@ -71,7 +71,7 @@ class UserService
         $manager->flush();
     }
 
-    public function passwordReset(Users $user, FormInterface $form, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher){
+    public function resetForgetPassword(Users $user, FormInterface $form, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher){
         $user->setPassword(
             $userPasswordHasher->hashPassword(
                 $user,
@@ -82,5 +82,25 @@ class UserService
         $user->setPasswordForgetUpdatedAt(new \DateTimeImmutable());
 
         $manager->flush();
+    }
+
+    public function resetPassword(Users $user, FormInterface $form, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher): bool{
+        $oldPassword = $form->get('old_password')->getData();
+        if(!$userPasswordHasher->isPasswordValid($user, $oldPassword)){
+            return false;
+        }
+
+        $newPassword = $form->get('new_password')->getData();
+        $user->setPassword(
+            $userPasswordHasher->hashPassword(
+                $user,
+                $newPassword
+            )
+        );
+
+        $user->setPasswordForgetUpdatedAt(new \DateTimeImmutable());
+
+        $manager->flush();
+        return true;
     }
 }

@@ -8,6 +8,7 @@ use App\Service\Mail\MailService;
 use App\Service\User\UserService;
 use function PHPUnit\Framework\isEmpty;
 
+use App\Form\User\PasswordForgetFormType;
 use App\Form\User\PasswordResetFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Validation;
@@ -42,6 +43,10 @@ class SecurityController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+
+        if ($error !== null) {
+            $this->addFlash('danger', "L'email ou le mot de passe n'est pas correct");
+        }
 
         return $this->render('admin/connexion/index.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
@@ -93,22 +98,7 @@ class SecurityController extends AbstractController
             }
         }
 
-        return $this->render('admin/connexion/password_update.html.twig');
-    }
-
-    private function resetPassword(Request $request, Users $user, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher){
-        $form = $this->createForm(PasswordResetFormType::class);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->userService->passwordReset($user, $form, $manager, $userPasswordHasher);
-            return $this->redirectToRoute('app_login');
-        }
-
-        return $this->render('admin/connexion/password_reset.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->render('admin/connexion/send_mail_reset_form.html.twig');
     }
 
     #[Route('/utilisateur/maj-mdp-oublie/{id}/{token}', name: 'user_reset_forget_password')]
@@ -128,14 +118,42 @@ class SecurityController extends AbstractController
         if ($now > $user->getTokenForgetPasswordLifeTime()) {
             throw new AccessDeniedException();
         }
-        
-        return $this->resetPassword($request, $user, $manager, $userPasswordHasher);
+
+        $form = $this->createForm(PasswordForgetFormType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->userService->resetForgetPassword($user, $form, $manager, $userPasswordHasher);
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('admin/connexion/password_forget.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     #[Route('/utilisateur/maj-mdp', name: 'user_reset_password')]
     #[IsGranted('ROLE_USER')]
-    public function resetUserPassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher){
+    public function updatePassword(Request $request, EntityManagerInterface $manager, UserPasswordHasherInterface $userPasswordHasher)
+    {
         $user = $this->getUser();
-        return $this->resetPassword($request, $user, $manager, $userPasswordHasher);
+
+        $form = $this->createForm(PasswordResetFormType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $res = $this->userService->resetPassword($user, $form, $manager, $userPasswordHasher);
+            if ($res) {
+                return $this->redirectToRoute('app_login');
+            }
+
+            $this->addFlash('danger', "L'ancien mot de passe n'est pas correct");
+        }
+
+        return $this->render('admin/connexion/password_update.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
