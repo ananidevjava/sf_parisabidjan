@@ -31,12 +31,20 @@ class RegistrationFormType extends AbstractType
             ->add('lastName', TextType::class, [
                 'label' => 'Nom *',
                 'attr' => [
+<<<<<<< HEAD
                     'placeholder' => 'Nom',
                     'class'=> 'form-control form-control-lg'
                 ]
             ])
             ->add('dob', DateType::class, [
                 'label'=>'Date de naissance *',
+=======
+                    'placeholder' => 'Nom'
+                ]
+            ])
+            ->add('dob', DateType::class, [
+                'label' => 'Date de naissance',
+>>>>>>> 29338cb1d687e4659155db8db790ebcc07ae01ab
                 'widget' => 'single_text',
                 'attr' => [
                     'data-format' => 'yyyy-mm-dd',
